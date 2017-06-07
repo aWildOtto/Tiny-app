@@ -8,9 +8,16 @@
       <% include partials/_header%>
     </header>
     <ul>
-    <% for(let i in urls) { %>
-      <li><%= `${i} : ${urls[i]}` %></li>
-    <% } %>
+      <% for(let i in urls) { %>
+        <form method="POST" action='/urls/<%= i %>/delete'>
+          <li><%= `${i} : ${urls[i]}` %></li>
+          <button>delete</button>
+        </form>
+      <% } %>
     </ul>
+
+    <form method="GET" action='/urls/new'>
+      <button>Add a new url</button>
+    </form>
 </body>
 </html>

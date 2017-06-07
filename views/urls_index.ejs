@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
   <title>TinyApp</title>
+  <style>form{display:inline}</style>
 </head>
 <body>
     <header>
@@ -9,13 +10,16 @@
     </header>
     <ul>
       <% for(let i in urls) { %>
-        <form method="POST" action='/urls/<%= i %>/delete'>
-          <li><%= `${i} : ${urls[i]}` %></li>
-          <button>delete</button>
-        </form>
-        <form method="GET" action='/urls/<%= i %>'>
-          <button>Edit</button>
-        </form>
+        <li>
+          <a href="/u/<%=i%>"><%= `${i} : ${urls[i]}` %></a>
+          <form method="POST" action='/urls/<%= i %>/delete'>
+            
+            <button>delete</button>
+          </form>
+          <form method="GET" action='/urls/<%= i %>'>
+            <button>Edit</button>
+          </form>
+        </li>
       <% } %>
     </ul>
 

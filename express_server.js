@@ -28,14 +28,20 @@ app.post("/urls", (req, res) => {
 });
 
 app.post("/urls/:id/delete",(req,res)=>{
-  console.log(`deleting ${req.params.id}`);
+  //console.log(`deleting ${req.params.id}`);
   delete urlDatabase[req.params.id];
-  console.log(urlDatabase);
+  //console.log(urlDatabase);
+  res.redirect(`/urls`);
+});
+
+app.post("/urls/:id/update",(req,res)=>{
+  console.log(req.body.newURL);
+  urlDatabase[req.params.id] = req.body.newURL;
   res.redirect(`/urls`);
 });
 
 app.get("/", (req, res) => {
-  res.end("Hello!");
+  res.redirect(`/urls`);
 });
 
 app.get("/urls.json", (req, res) => {

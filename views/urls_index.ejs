@@ -13,6 +13,9 @@
           <li><%= `${i} : ${urls[i]}` %></li>
           <button>delete</button>
         </form>
+        <form method="GET" action='/urls/<%= i %>'>
+          <button>Edit</button>
+        </form>
       <% } %>
     </ul>
 

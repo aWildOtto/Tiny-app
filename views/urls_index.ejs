@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>TinyApp</title>
+</head>
+<body>
+    <header>
+      <% include partials/_header%>
+    </header>
+    <ul>
+    <% for(let i in urls) { %>
+      <li><%= `${i} : ${urls[i]}` %></li>
+    <% } %>
+    </ul>
+</body>
+</html>

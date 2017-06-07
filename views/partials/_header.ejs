@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>TinyApp</title>
+</head>
+<body>
+    <header>
+        <% if(username){%>
+        <h1><%= username %></h1>
+        <form method = "POST" action = "/logout">
+            <button>log out</button>
+        </form>
+        <% }else{ %>
+      <form method = "POST" action = "/login">
+        <input id = "un" name = "username" placeholder="Username">
+        <button>login</button>
+      </form>
+      <% } %>
+    </header>
+</body>
+</html>

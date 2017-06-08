@@ -131,8 +131,9 @@ app.get("/hello", (req, res) => {
 
 app.get("/urls/:id", (req, res) => {
   // console.log(urlDatabase[req.cookies['user_id']][req.params.id]);
-  if(!urlDatabase[req.cookies['user_id']]){
+  if(!urlDatabase[req.cookies['user_id']] || !urlDatabase[req.cookies['user_id']].hasOwnProperty(req.params.id)){
     res.status(404).end("Sorry, you can't edit this link cuz this link doesn't belong to ya");
+    return;
   }
   let templateVars = { shortURL: req.params.id,
                       longURL: urlDatabase[req.cookies['user_id']][req.params.id],
@@ -143,7 +144,13 @@ app.get("/urls/:id", (req, res) => {
 });
 
 app.get("/urls", (req, res) => {
-  let templateVars = {urls: urlDatabase[req.cookies['user_id']],
+  let allUrls = {};
+   for(let user in urlDatabase){
+    for(let url in urlDatabase[user]){
+      allUrls[url] = urlDatabase[user][url];
+    }
+  }
+  let templateVars = {urls: allUrls,
                       user: users[req.cookies['user_id']]
                     };
 

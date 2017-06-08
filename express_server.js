@@ -1,5 +1,6 @@
 //--------------configuration--------------------
 var express = require("express");
+const bcrypt = require('bcrypt');
 var app = express();
 var PORT = process.env.PORT || 8080; // default port 8080
 app.set("view engine", "ejs");
@@ -17,13 +18,13 @@ const users = {
   somerandomcode:{
     name: 'Otto',
     email: 'otto@otto.otto',
-    password: 'otto',
+    password: bcrypt.hashSync('otto',10),
     id: 'somerandomcode'
   },
   jjj:{
     name: 'Joel',
     email: 'joel@joel.joel',
-    password: 'joel',
+    password: bcrypt.hashSync('joel',10),
     id: 'jjj'
   }
 };
@@ -35,7 +36,7 @@ const cookieParser = require('cookie-parser')
 app.use(cookieParser());
 
 
-//--------------post routes--------------------
+//--------------POST routes--------------------
 app.post("/urls", (req, res) => {
   //console.log(req.body.longURL);  // debug statement to see POST parameters
   let shortCode = generateRandomString();
@@ -60,7 +61,7 @@ app.post("/login",(req, res)=>{
   for(let user in users){
   // console.log(users[user].email);
     if(req.body.email == users[user].email){
-      if(req.body.password == users[user].password){
+      if(bcrypt.compareSync(req.body.password, users[user].password)){
         res.cookie('user_id',user);
         res.redirect('/urls');
       } else {
@@ -90,14 +91,14 @@ app.post("/register",(req,res)=>{
   users[randomCode] = {
     name: req.body.name,
     email: req.body.email,
-    password: req.body.password,
+    password: bcrypt.hashSync(req.body.password,10),
     id: randomCode
   }
   res.cookie('user_id',randomCode);
   res.redirect('/urls');
 });
 
-//--------------get routes--------------------
+//--------------GET routes--------------------
 
 app.get("/login",(req, res)=>{
   res.render('urls_login');

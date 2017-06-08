@@ -8,21 +8,24 @@
     <header>
       <% include partials/_header%>
     </header>
-    <ul>
-      <% for(let i in urls) { %>
-        <li>
-          <a href="/u/<%=i%>"><%= `${i} : ${urls[i]}` %></a>
-          <form method="POST" action='/urls/<%= i %>/delete'>
-            
-            <button>delete</button>
-          </form>
-          <form method="GET" action='/urls/<%= i %>'>
-            <button>Edit</button>
-          </form>
-        </li>
+      <% if(!urls){%>
+      <h1>You have no urls yet, add more now!</h1>
+      <%}else{%>
+        <ul>
+          <% for(let i in urls) { %>
+            <li>
+              <a href="/u/<%=i%>"><%= `${i} : ${urls[i]}` %></a>
+              <form method="POST" action='/urls/<%= i %>/delete'>
+                
+                <button>delete</button>
+              </form>
+              <form method="GET" action='/urls/<%= i %>'>
+                <button>Edit</button>
+              </form>
+            </li>
+          <% } %>
+        </ul>
       <% } %>
-    </ul>
-
     <form method="GET" action='/urls/new'>
       <button>Add a new url</button>
     </form>

@@ -5,15 +5,17 @@
 </head>
 <body>
     <header>
-        <% if(username){%>
-        <h1><%= username %></h1>
+        <% if(user){%>
+        <h1><%= `Hi there, ${user.name}` %></h1>
         <form method = "POST" action = "/logout">
             <button>log out</button>
         </form>
         <% }else{ %>
-      <form method = "POST" action = "/login">
-        <input id = "un" name = "username" placeholder="Username">
+      <form method = "GET" action = "/login">
         <button>login</button>
+      </form>
+      <form method = "GET" action = "/register">
+        <button>Register</button>
       </form>
       <% } %>
     </header>

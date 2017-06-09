@@ -50,7 +50,7 @@ app.post("/urls", (req, res) => {
 });
 
 app.post("/urls/:id/delete",(req, res)=>{
-  if(!req.session.user_id || !urlDatabase[req.session.user_id].hasOwnProperty(req.params.id)){
+  if(!req.session.user_id || !urlDatabase[req.session.user_id] || !urlDatabase[req.session.user_id].hasOwnProperty(req.params.id)){
     res.status(403).end("Not your link, you can't delete");
     return;
   }

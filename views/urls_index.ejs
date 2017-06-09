@@ -14,7 +14,7 @@
         <ul>
           <% for(let i in urls) { %>
             <li>
-              <a href="/u/<%=i%>"><%= `${i} : ${urls[i]}` %></a>
+              <a href="/u/<%=i%>"><%= `localhost/${i}` %></a>
               <form method="POST" action='/urls/<%= i %>/delete'>
                 
                 <button>delete</button>

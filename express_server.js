@@ -4,14 +4,23 @@ const bcrypt = require('bcrypt');
 var app = express();
 var PORT = process.env.PORT || 8080; // default port 8080
 app.set("view engine", "ejs");
-
+//------dummy database with test data------------
 const urlDatabase = {
   somerandomcode: {
-    "b2xVn2": "http://www.lighthouselabs.ca",
-    "9sm5xK": "http://www.google.com"
+    "b2xVn2": {
+      site: "http://www.lighthouselabs.ca",
+      clicks: 0
+    },
+    "9sm5xK": {
+      site: "http://www.google.com",
+      clicks: 0
+    }
   },
   jjj: {
-    "a1234z": "http://www.pinterest.com"
+    "a1234z": {
+      site: "http://www.pinterest.com",
+      clicks: 0
+    }
   }
 };
 const users = {
@@ -44,14 +53,17 @@ app.post("/urls", (req, res) => {
   let shortCode = generateRandomString();
   if(!urlDatabase[req.session.user_id]){
     urlDatabase[req.session.user_id] = {};
-  }    
-  urlDatabase[req.session.user_id][shortCode] = req.body.longURL;
+  }
+  urlDatabase[req.session.user_id][shortCode] = {
+    site: req.body.longURL,
+    clicks: 0
+  };
   res.redirect(`/urls/${shortCode}`);
 });
 
 app.post("/urls/:id/delete",(req, res)=>{
   if(!req.session.user_id || !urlDatabase[req.session.user_id] || !urlDatabase[req.session.user_id].hasOwnProperty(req.params.id)){
-    res.status(403).end("Not your link, you can't delete");
+    res.status(403).end("Sory but this is not your link, you can't delete it");
     return;
   }
   delete urlDatabase[req.session.user_id][req.params.id];
@@ -85,7 +97,8 @@ app.post("/logout",(req, res)=>{
 
 app.post("/urls/:id/update",(req,res)=>{
   //console.log(req.body.newURL);
-  urlDatabase[req.session.user_id][req.params.id] = req.body.newURL;
+  urlDatabase[req.session.user_id][req.params.id].site = req.body.newURL;
+  urlDatabase[req.session.user_id][req.params.id].clicks = 0;
   res.redirect(`/urls`);
 });
 
@@ -108,7 +121,13 @@ app.post("/register",(req,res)=>{
 //--------------GET routes--------------------
 
 app.get("/login",(req, res)=>{
-  res.render('urls_login');
+  if(req.session.user_id){
+    res.render('urls_login');
+    return;
+  }else{
+    res.redirect('urls');
+    return;
+  }
 })
 
 app.get("/register",(req,res)=>{
@@ -126,7 +145,13 @@ app.get("/urls/new", (req, res) => {
 });
 
 app.get("/", (req, res) => {
-  res.redirect(`/urls`);
+  if(req.session.user_id){
+    res.redirect(`/urls`);
+    return;
+  }
+  else{
+    res.redirect(`/login`);
+  }
 });
 
 app.get("/urls.json", (req, res) => {
@@ -171,13 +196,14 @@ app.get("/u/:shortURL", (req, res) => {
 
   for(let user in urlDatabase){
     for(let url in urlDatabase[user]){
-      if(url===req.params.shortURL){
+      if(url===req.params.shortURL){//potential repeating link may cause problem
         longURL = urlDatabase[user][url];
       }
     }
   }
   if(longURL){
-    res.redirect(longURL);
+    longURL.clicks += 1;//(stretch) recording how many times a link is clicked
+    res.redirect(longURL.site);
   }else{
     res.status(404).end("link not found");
   }

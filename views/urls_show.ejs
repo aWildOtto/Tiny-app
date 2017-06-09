@@ -10,7 +10,7 @@
     <ul>
       <%= shortURL %>
       <form method="POST" action='/urls/<%= shortURL %>/update'>
-        <input id="shortURL" type="text" name = "newURL" value = <%= longURL %> >
+        <input id="shortURL" type="text" name = "newURL" value = <%= longURL.site %> >
         <button>Confirm</button>
       </form>
     </ul>

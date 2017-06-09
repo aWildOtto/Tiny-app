@@ -122,10 +122,10 @@ app.post("/register",(req,res)=>{
 
 app.get("/login",(req, res)=>{
   if(req.session.user_id){
-    res.render('urls_login');
+    res.redirect('urls');
     return;
   }else{
-    res.redirect('urls');
+    res.render('urls_login');
     return;
   }
 })

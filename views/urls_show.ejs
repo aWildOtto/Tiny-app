@@ -11,6 +11,7 @@
       <%= shortURL %>
       <form method="POST" action='/urls/<%= shortURL %>?_method=PUT'>
         <input id="shortURL" type="text" name = "newURL" value = <%= longURL.site %> >
+        <p><%= `${longURL.clicks} clicks on this site` %></p>
         <button>Confirm</button>
       </form>
     </ul>

@@ -9,7 +9,7 @@
     </header>
     <ul>
       <%= shortURL %>
-      <form method="POST" action='/urls/<%= shortURL %>/update'>
+      <form method="POST" action='/urls/<%= shortURL %>?_method=PUT'>
         <input id="shortURL" type="text" name = "newURL" value = <%= longURL.site %> >
         <button>Confirm</button>
       </form>

@@ -45,6 +45,8 @@ const cookieSession = require('cookie-session');
 app.use(cookieSession({
   secret: '9uX2lkIjoiZGY4MDdmMDUwM2JhNTdhYTE0Y2FlM2YwNjNjOTY'
 }));
+const methodOverride = require('method-override');
+app.use(methodOverride('_method'));
 
 
 //--------------POST routes--------------------
@@ -61,7 +63,7 @@ app.post("/urls", (req, res) => {
   res.redirect(`/urls/${shortCode}`);
 });
 
-app.post("/urls/:id/delete",(req, res)=>{
+app.delete("/urls/:id",(req, res)=>{
   if(!req.session.user_id || !urlDatabase[req.session.user_id] || !urlDatabase[req.session.user_id].hasOwnProperty(req.params.id)){
     res.status(403).end("Sory but this is not your link, you can't delete it");
     return;
@@ -95,7 +97,7 @@ app.post("/logout",(req, res)=>{
   res.redirect('/urls');
 });
 
-app.post("/urls/:id/update",(req,res)=>{
+app.put("/urls/:id",(req,res)=>{
   //console.log(req.body.newURL);
   urlDatabase[req.session.user_id][req.params.id].site = req.body.newURL;
   urlDatabase[req.session.user_id][req.params.id].clicks = 0;

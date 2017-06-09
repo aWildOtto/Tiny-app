@@ -15,7 +15,7 @@
           <% for(let i in urls) { %>
             <li>
               <a href="/u/<%=i%>"><%= `localhost/${i} -- ${urls[i].clicks} clicks so far` %></a>
-              <form method="POST" action='/urls/<%= i %>/delete'>
+              <form method="POST" action='/urls/<%= i %>?_method=DELETE'>
                 <button>delete</button>
               </form>
               <form method="GET" action='/urls/<%= i %>'>

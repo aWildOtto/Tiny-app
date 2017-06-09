@@ -32,23 +32,29 @@ const users = {
 //--------------middleware--------------------
 const bodyParser = require("body-parser");
 app.use(bodyParser.urlencoded({extended: true}));
-const cookieParser = require('cookie-parser')
-app.use(cookieParser());
+const cookieSession = require('cookie-session');
+app.use(cookieSession({
+  secret: '9uX2lkIjoiZGY4MDdmMDUwM2JhNTdhYTE0Y2FlM2YwNjNjOTY'
+}));
 
 
 //--------------POST routes--------------------
 app.post("/urls", (req, res) => {
   //console.log(req.body.longURL);  // debug statement to see POST parameters
   let shortCode = generateRandomString();
-  if(!urlDatabase[req.cookies['user_id']]){
-    urlDatabase[req.cookies['user_id']] = {};
+  if(!urlDatabase[req.session.user_id]){
+    urlDatabase[req.session.user_id] = {};
   }    
-  urlDatabase[req.cookies['user_id']][shortCode] = req.body.longURL;
+  urlDatabase[req.session.user_id][shortCode] = req.body.longURL;
   res.redirect(`/urls/${shortCode}`);
 });
 
 app.post("/urls/:id/delete",(req, res)=>{
-  delete urlDatabase[req.cookies['user_id']][req.params.id];
+  if(!req.session.user_id || !urlDatabase[req.session.user_id].hasOwnProperty(req.params.id)){
+    res.status(403).end("Not your link, you can't delete");
+    return;
+  }
+  delete urlDatabase[req.session.user_id][req.params.id];
   res.redirect(`/urls`);
 });
 
@@ -60,9 +66,9 @@ app.post("/login",(req, res)=>{
   //console.log(req.body.email+" and "+ req.body.password);
   for(let user in users){
   // console.log(users[user].email);
-    if(req.body.email == users[user].email){
+    if(req.body.email === users[user].email){
       if(bcrypt.compareSync(req.body.password, users[user].password)){
-        res.cookie('user_id',user);
+        req.session.user_id = user;
         res.redirect('/urls');
       } else {
         res.status(403).end("Wrong password bro");
@@ -73,13 +79,13 @@ app.post("/login",(req, res)=>{
 });
 
 app.post("/logout",(req, res)=>{
-  res.clearCookie('user_id');
+  req.session = null;
   res.redirect('/urls');
 });
 
 app.post("/urls/:id/update",(req,res)=>{
   //console.log(req.body.newURL);
-  urlDatabase[req.cookies['user_id']][req.params.id] = req.body.newURL;
+  urlDatabase[req.session.user_id][req.params.id] = req.body.newURL;
   res.redirect(`/urls`);
 });
 
@@ -94,7 +100,7 @@ app.post("/register",(req,res)=>{
     password: bcrypt.hashSync(req.body.password,10),
     id: randomCode
   }
-  res.cookie('user_id',randomCode);
+  req.session.user_id = randomCode;
   res.redirect('/urls');
 });
 
@@ -109,12 +115,12 @@ app.get("/register",(req,res)=>{
 });
 
 app.get("/urls/new", (req, res) => {
-  if(!users[req.cookies['user_id']]){
+  if(!users[req.session.user_id]){
     res.redirect('/login');
     return;
   }
-  let templateVars = { user: users[req.cookies['user_id']] };
-  //console.log(users[req.cookies['user_id']]);
+  let templateVars = { user: users[req.session.user_id] };
+  //console.log(users[req.session.user_id]);
   res.render("urls_new",templateVars);
 });
 
@@ -131,14 +137,14 @@ app.get("/hello", (req, res) => {
 });
 
 app.get("/urls/:id", (req, res) => {
-  // console.log(urlDatabase[req.cookies['user_id']][req.params.id]);
-  if(!urlDatabase[req.cookies['user_id']] || !urlDatabase[req.cookies['user_id']].hasOwnProperty(req.params.id)){
+  // console.log(urlDatabase[req.session.user_id][req.params.id]);
+  if(!urlDatabase[req.session.user_id] || !urlDatabase[req.session.user_id].hasOwnProperty(req.params.id)){
     res.status(404).end("Sorry, you can't edit this link cuz this link doesn't belong to ya");
     return;
   }
   let templateVars = { shortURL: req.params.id,
-                      longURL: urlDatabase[req.cookies['user_id']][req.params.id],
-                      user: users[req.cookies['user_id']], 
+                      longURL: urlDatabase[req.session.user_id][req.params.id],
+                      user: users[req.session.user_id], 
                     };
   res.render("urls_show", templateVars);
   
@@ -152,7 +158,7 @@ app.get("/urls", (req, res) => {
     }
   }
   let templateVars = {urls: allUrls,
-                      user: users[req.cookies['user_id']]
+                      user: users[req.session.user_id]
                     };
 
   //console.log(templateVars.user);

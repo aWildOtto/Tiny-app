@@ -100,6 +100,7 @@ app.post("/register",(req,res)=>{
     password: bcrypt.hashSync(req.body.password,10),
     id: randomCode
   }
+  urlDatabase[randomCode] = {};
   req.session.user_id = randomCode;
   res.redirect('/urls');
 });

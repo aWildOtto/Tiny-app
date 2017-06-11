@@ -7,15 +7,13 @@
     <header >
         <h1>Log In!</h1>
     </header>
-      <form method="POST" action='/login' >
+      <form method="POST" action='/login' style="margin:150px">
         <label for="em">Email: </label>
         <input id="em" type="email" name = "email" placeholder="your email" >
         <label for="pw">Password: </label>
         <input id="pw" type="password" name = "password" placeholder="hope you remember" >
         <button>Here I Come</button>
       </form>
-      <form method="GET" action='/register' style="margin:150px">
-        <button>Wait I have no account yet</button>
-      </form>
+      <a href="/register" style="margin:150px"> <button> Wait I don't have an account yet </button> </a>
 </body>
 </html>

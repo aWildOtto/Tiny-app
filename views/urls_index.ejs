@@ -14,19 +14,16 @@
         <ul>
           <% for(let i in urls) { %>
             <li>
+              <p><%= urls[i].site %></p>
               <a href="/u/<%=i%>"><%= `localhost/${i} -- ${urls[i].clicks} clicks so far` %></a>
               <form method="POST" action='/urls/<%= i %>?_method=DELETE'>
                 <button>delete</button>
               </form>
-              <form method="GET" action='/urls/<%= i %>'>
-                <button>Edit</button>
-              </form>
+              <a href="/urls/<%= i %>"> <button> Edit </button> </a>
             </li>
           <% } %>
         </ul>
       <% } %>
-    <form method="GET" action='/urls/new'>
-      <button>Add a new url</button>
-    </form>
+      <a href="/urls/new"> <button> Add a new url </button> </a>
 </body>
 </html>

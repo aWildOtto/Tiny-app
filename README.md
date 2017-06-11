@@ -2,6 +2,10 @@
 
 Tiny app is a full stack web application built with Node and Express that allows users to shorten long URLs (bitly clone)
 
+## screenshots
+![main page](/imgs/1.png)
+![login page](/imgs/2.png)
+
 ## Final Product
 
 shortens urls for different users
@@ -23,6 +27,6 @@ login id stored using cookie session
 
 ## Geting started
 
-- install all dependencies using npm install
-- run express-server.js using node
-- visit localhost:8080/ via browser
+- install all dependencies using `npm install`
+- run `node express-server.js` in the terminal
+- visit `localhost:8080/` via browser

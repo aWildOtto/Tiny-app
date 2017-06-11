@@ -8,7 +8,7 @@
       <% include partials/_header%>
     </header>
     <ul>
-      <%= shortURL %>
+      <a href = <%= `localhost:8080/u/${shortURL}` %>><%= shortURL %></a>
       <form method="POST" action='/urls/<%= shortURL %>?_method=PUT'>
         <input id="shortURL" type="text" name = "newURL" value = <%= longURL.site %> >
         <p><%= `${longURL.clicks} clicks on this site` %></p>

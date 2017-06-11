@@ -2,9 +2,9 @@
 
 Tiny app is a full stack web application built with Node and Express that allows users to shorten long URLs (bitly clone)
 
-## screenshots
-![main page](/imgs/1.png)
-![login page](/imgs/2.png)
+## Screenshots
+![main page](/screenshots/1.png)
+![login page](/screenshots/2.png)
 
 ## Final Product
 

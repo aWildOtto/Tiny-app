@@ -119,6 +119,10 @@ app.delete("/urls/:id", (req, res)=>{
 });
 
 app.put("/urls/:id", (req, res)=>{
+	if(!isLogedIn(req)){
+		res.status(403).end("You are logged out due to session expire");
+		return;
+	}
 	urlDatabase[req.session.user_id][req.params.id].site = req.body.newURL;
 	urlDatabase[req.session.user_id][req.params.id].clicks = 0;
 	res.redirect("/urls");

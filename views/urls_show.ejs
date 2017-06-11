@@ -8,11 +8,12 @@
       <% include partials/_header%>
     </header>
     <ul>
-      <a href ="/u/<%=shortURL%>"` %>><%= shortURL %></a>
+      <p>Edit your link:</p>
+      <a href ="/u/<%=shortURL%>" ><%= `${shortURL} - ${longURL.site}` %></a>
+      <p><%= `${longURL.clicks} clicks on this site` %></p>
       <form method="POST" action='/urls/<%= shortURL %>?_method=PUT'>
         <input id="shortURL" type="text" name = "newURL" value = <%= longURL.site %> >
-        <p><%= `${longURL.clicks} clicks on this site` %></p>
-        <button>Confirm</button>
+        <button>Edit</button>
       </form>
     </ul>
 </body>

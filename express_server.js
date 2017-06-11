@@ -19,17 +19,17 @@ const urlDatabase = {
     //-- object format: 
     //user_id: {
     //  shortUrl: {
-    //    site:
-    //    clicks:
+    //    site: www.google.com,
+    //    clicks: 0
     //  }
     //}
 };
 const users = {
     //-- object format: 
     //id: {
-    //   name: ,
+    //  name: otto,
     // 	email: @,
-    // 	password: 123, 
+    // 	password: bcrypted, 
     // 	id: some random code
     // }
 };
@@ -126,7 +126,7 @@ app.put("/urls/:id", (req, res)=>{
 
 app.post("/register", (req,res)=>{
 	if(!req.body.email || !req.body.name || !req.body.password || users[req.body.name]){
-		res.status(400).end("information missing");
+		res.status(400).end("Information missing");
 	}
 	let randomCode = generateRandomString();
 	users[randomCode] = {

@@ -71,7 +71,7 @@ function isLogedIn(req){
 
 //--------------POST routes--------------------
 app.post("/urls", (req, res) => {
-  if(!isLogedIn()){
+  if(!isLogedIn(req)){
     res.status(403).end("You have been logged out due to session expire");
     return;
   }
